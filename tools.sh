@@ -164,7 +164,8 @@ cd /lfs/src/
 tar -xvf gettext-0.20.1.tar.xz
 cd gettext-0.20.1
 ./configure --disable-shared
-make
+make && make check
+make install
 
 cd /lfs/src/
 tar -xvf grep-3.3.tar.xz
