@@ -1,8 +1,7 @@
 #!/bin/bash
 
 cd /lfs/src
-tar -Jxvf binutils-2.32.tar.xz
-cd binutils-2.32
+tar -xvf binutils-2.32.tar.xz && cd binutils-2.32
 mkdir build
 cd build
 ../configure --prefix=/tools --with-sysroot=/lfs --with-lib-path=/tools/lib --target=$LFS_TGT --disable-nls --disable-werror
@@ -11,8 +10,7 @@ case $(uname -m) in   x86_64) mkdir -v /tools/lib && ln -sv lib /tools/lib64 ;; 
 make install
 
 cd /lfs/src
-tar -xvf gcc-9.2.0.tar.xz
-cd gcc-9.2.0
+tar -xvf gcc-9.2.0.tar.xz && cd gcc-9.2.0
 tar -xvf ../mpfr-4.0.2.tar.xz
 mv -v mpfr-4.0.2 mpfr
 tar -xvf ../gmp-6.1.2.tar.xz
@@ -44,15 +42,13 @@ make
 make install
 
 cd /lfs/src
-tar -xvf linux-5.2.8.tar.xz
-cd linux-5.2.8
+tar -xvf linux-5.2.8.tar.xz && cd linux-5.2.8
 make mrproper
 make INSTALL_HDR_PATH=dest headers_install
 cp -rv dest/include/* /tools/include
 
 cd /lfs/src/
-tar -xvf glibc-2.30.tar.xz
-cd glibc-2.30
+tar -xvf glibc-2.30.tar.xz && cd glibc-2.30
 mkdir build
 cd build
 ../configure --prefix=/tools --host=$LFS_TGT --build=$(../scripts/config.guess) --enable-kernel=3.2 --with-headers=/tools/include
