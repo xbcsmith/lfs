@@ -19,7 +19,9 @@ PATH=/tools/bin:/bin:/usr/bin
 export LFS LC_ALL LFS_TGT PATH
 ```
 
-### binutils
+### Tools
+
+#### binutils
 
 ```bash
 cd /lfs/src
@@ -33,7 +35,7 @@ make install
 cd /lfs/src
 ```
 
-### GCC
+#### GCC
 
 ```bash 
 cd /lfs/src
@@ -68,7 +70,7 @@ make
 make install
 ```
 
-### linux-5.2.8 API Headers
+#### linux-5.2.8 API Headers
 
 ```bash
 cd /lfs/src
@@ -78,7 +80,7 @@ make INSTALL_HDR_PATH=dest headers_install
 cp -rv dest/include/* /tools/include
 ```
 
-### glibc-2.3.0
+#### glibc-2.3.0
 
 ```bash
 cd /lfs/src/
@@ -90,7 +92,7 @@ make
 make install
 ```
 
-#### Test
+##### Test
 
 ```bash
 cd /tools
@@ -101,7 +103,7 @@ rm dummy.c a.out
 cd -
 ```
 
-### Libstdc++ from GCC-9.2.0
+#### libstdc++ from GCC-9.2.0
 
 ```bash
 cd /lfs/src/gcc-9.2.0
