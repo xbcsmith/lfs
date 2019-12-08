@@ -309,6 +309,28 @@ make install && make install-html
 ## http://www.linuxfromscratch.org/blfs/view/9.0/postlfs/cracklib.html
 
 cd /src
+tar -xvf cracklib-2.9.7.tar.bz2 && cd cracklib-2.9.7
+sed -i '/skipping/d' util/packer.c &&
+./configure --prefix=/usr    \
+            --disable-static \
+            --with-default-dict=/lib/cracklib/pw_dict &&
+make
+make install                      &&
+mv -v /usr/lib/libcrack.so.* /lib &&
+ln -sfv ../../lib/$(readlink /usr/lib/libcrack.so) /usr/lib/libcrack.so
+install -v -m644 -D    ../cracklib-words-2.9.7.bz2 \
+                         /usr/share/dict/cracklib-words.bz2    &&
+
+bunzip2 -v               /usr/share/dict/cracklib-words.bz2    &&
+ln -v -sf cracklib-words /usr/share/dict/words                 &&
+echo $(hostname) >>      /usr/share/dict/cracklib-extra-words  &&
+install -v -m755 -d      /lib/cracklib                         &&
+
+create-cracklib-dict     /usr/share/dict/cracklib-words \
+                         /usr/share/dict/cracklib-extra-words
+
+
+cd /src
 tar -xvf shadow-4.7.tar.xz && cd shadow-4.7
 sed -i 's/groups$(EXEEXT) //' src/Makefile.in
 find man -name Makefile.in -exec sed -i 's/groups\.1 / /'   {} \;
@@ -317,17 +339,18 @@ find man -name Makefile.in -exec sed -i 's/passwd\.5 / /'   {} \;
 sed -i -e 's@#ENCRYPT_METHOD DES@ENCRYPT_METHOD SHA512@' \
        -e 's@/var/spool/mail@/var/mail@' etc/login.defs
 ## with cracklib
-# sed -i 's@DICTPATH.*@DICTPATH\t/lib/cracklib/pw_dict@' etc/login.defs
+sed -i 's@DICTPATH.*@DICTPATH\t/lib/cracklib/pw_dict@' etc/login.defs
 
 sed -i 's/1000/999/' etc/useradd
-./configure --sysconfdir=/etc --with-group-name-max-length=32
+./configure --sysconfdir=/etc --with-group-name-max-length=32 --with-libcrack
 make
 make install
 mv -v /usr/bin/passwd /bin
 pwconv
 grpconv
 sed -i 's/yes/no/' /etc/default/useradd
-passwd root
+## passwd root
+echo "root:lfspasswd" | chpasswd
 
 cd /src
 tar -xvf gcc-9.2.0.tar.xz && cd gcc-9.2.0
@@ -1148,14 +1171,28 @@ cat /etc/sysconfig/rc.site << "EOF"
 
 EOF
 
+mkdir -pv /etc/profile.d
+
 cat > /etc/profile << "EOF"
 # Begin /etc/profile
 
 export LANG=en_US.UTF-8
 
+for i in /etc/profile.d/*.sh /etc/profile.d/sh.local ; do
+    if [ -r "$i" ]; then
+        if [ "${-#*i}" != "$-" ]; then
+            . "$i"
+        else
+            . "$i" >/dev/null
+        fi
+    fi
+done
+
+
 # End /etc/profile
 EOF
 
+echo -e "#Add any required envvar overrides to this file, it is sourced from /etc/profile" > /etc/profile.d/sh.local
 
 cat > /etc/inputrc << "EOF"
 # Begin /etc/inputrc
@@ -1216,9 +1253,9 @@ cat > /etc/fstab << "EOF"
 # file system  mount-point  type     options             dump  fsck
 #                                                              order
 
-/dev/<xxx>     /boot        <fff>    defaults            0     0
-/dev/<xxx>     /            <fff>    defaults            1     1
-/dev/<yyy>     swap         swap     pri=1               0     0
+/dev/sda1      /boot        ext4     defaults            0     0
+/dev/sda2      /            ext4     defaults            1     1
+# /dev/<yyy>     swap         swap     pri=1               0     0
 proc           /proc        proc     nosuid,noexec,nodev 0     0
 sysfs          /sys         sysfs    nosuid,noexec,nodev 0     0
 devpts         /dev/pts     devpts   gid=5,mode=620      0     0
@@ -1246,8 +1283,6 @@ install -v -d -m755 /usr/share/doc/curl-7.67.0 &&
 cp -v -R docs/*     /usr/share/doc/curl-7.67.0
 
 
-
-curl -kO https://ftp.gnu.org/gnu/cpio/cpio-2.13.tar.bz2
 cd /src
 tar -xvf cpio-2.13.tar.bz2 && cd cpio-2.13
 ./configure --prefix=/usr \
@@ -1297,12 +1332,15 @@ set default=0
 set timeout=5
 
 insmod ext2
-set root=(hd0,2)
+set root=(hd0,1)
 
 menuentry "GNU/Linux, Linux 5.2.8-lfs-9.0" {
-        linux   /boot/vmlinuz-5.2.8-lfs-9.0 root=/dev/sda2 ro
+        linux   (hd0,1)/vmlinuz-5.2.8-lfs-9.0 root=/dev/sda2 ro
 }
+
 EOF
+
+echo "Linux From Scratch willful-squirrel 9.0" > /etc/issue
 
 echo 9.0 > /etc/lfs-release
 
@@ -1312,5 +1350,22 @@ DISTRIB_RELEASE="9.0"
 DISTRIB_CODENAME="willful-squirrel"
 DISTRIB_DESCRIPTION="Linux From Scratch"
 EOF
+
+cat > /usr/libexec/grepconf.sh << "EOF"
+#!/bin/sh
+
+case "$1" in
+    -c | --interactive-color)
+        ! grep -qsi "^COLOR.*none" /etc/GREP_COLORS
+        ;;
+    *)
+        echo >&2 "Invalid / no option passed, so far only -c | --interactive-color is supported."
+        exit 1
+        ;;
+esac
+
+EOF
+
+chmod +x /usr/libexec/grepconf.sh
 
 

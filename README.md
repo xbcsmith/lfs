@@ -470,9 +470,9 @@ export LFS=$HOME/lfs/build
 #### Mount main filesytems
 
 ```bash
-mkdir $LFS
+mkdir -pv $LFS
 sudo mount /dev/sdd2 $LFS
-sudo mkdir $LFS/boot
+sudo mkdir -pv $LFS/boot
 sudo mount /dev/sdd1 $LFS/boot/
 ```
 
@@ -637,6 +637,12 @@ sudo umount $LFS
 
 ```
 sudo dd if=/dev/sdd of=lfs-9.0-x86_64.img bs=2M status=progress
+```
+
+### Testing
+
+```bash
+qemu-system-x86_64 -drive format=raw,file=lfs-9.0-x86_64.img
 ```
 
 

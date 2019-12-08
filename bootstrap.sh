@@ -87,6 +87,26 @@ curl -kO http://www.linuxfromscratch.org/lfs/downloads/stable/md5sums
 curl -kO http://www.linuxfromscratch.org/lfs/downloads/stable/wget-list
 wget --input-file=wget-list --continue --direcory-prefix=/lfs/sources
 md5sum -c md5sums
+wget https://github.com/cracklib/cracklib/releases/download/v2.9.7/cracklib-2.9.7.tar.bz2
+wget https://github.com/cracklib/cracklib/releases/download/v2.9.7/cracklib-words-2.9.7.bz2
+echo "0d68de25332cee5660850528a385427f cracklib-2.9.7.tar.bz2" > extra.md5sums
+echo "94e9963e4786294f7fb0f2efd7618551 cracklib-words-2.9.7.bz2" >> extra.md5sums
+wget https://ftp.gnu.org/gnu/which/which-2.21.tar.gz
+echo "097ff1a324ae02e0a3b0369f07a7544a which-2.21.tar.gz" >> extra.md5sums
+wget https://ftp.gnu.org/gnu/cpio/cpio-2.13.tar.bz2
+echo "f3438e672e3fa273a7dc26339dd1eed6 cpio-2.13.tar.bz2" >> extra.md5sums
+wget https://github.com/linux-pam/linux-pam/releases/download/v1.3.1/Linux-PAM-1.3.1.tar.xz
+echo "558ff53b0fc0563ca97f79e911822165 Linux-PAM-1.3.1.tar.xz" >> extra.md5sums
+wget https://github.com/linux-pam/linux-pam/releases/download/v1.3.1/Linux-PAM-1.3.1-docs.tar.xz
+echo "1885fae049acd1b699a5459d7c4a0130 Linux-PAM-1.3.1-docs.tar.xz" >> extra.md5sums
+wget https://ftp.gnu.org/gnu/sharutils/sharutils-4.15.2.tar.xz
+echo "5975ce21da36491d7aa6dc2b0d9788e0 sharutils" >> extra.md5sums
+wget https://ftp.gnu.org/gnu/nettle/nettle-3.5.1.tar.gz
+echo "0e5707b418c3826768d41130fbe4ee86" >> extra.md5sums
+
+
+
+md5sum -c extra.md5sums
 popd
 
 ln -sf /lfs/tools /tools
