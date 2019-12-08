@@ -19,7 +19,9 @@ PATH=/tools/bin:/bin:/usr/bin
 export LFS LC_ALL LFS_TGT PATH
 ```
 
-### binutils
+### Tools
+
+#### binutils
 
 ```bash
 cd /lfs/src
@@ -33,7 +35,7 @@ make install
 cd /lfs/src
 ```
 
-### GCC
+#### GCC
 
 ```bash 
 cd /lfs/src
@@ -68,7 +70,7 @@ make
 make install
 ```
 
-### linux-5.2.8 API Headers
+#### linux-5.2.8 API Headers
 
 ```bash
 cd /lfs/src
@@ -78,7 +80,7 @@ make INSTALL_HDR_PATH=dest headers_install
 cp -rv dest/include/* /tools/include
 ```
 
-### glibc-2.3.0
+#### glibc-2.3.0
 
 ```bash
 cd /lfs/src/
@@ -90,7 +92,7 @@ make
 make install
 ```
 
-#### Test
+##### Test
 
 ```bash
 cd /tools
@@ -101,7 +103,7 @@ rm dummy.c a.out
 cd -
 ```
 
-### Libstdc++ from GCC-9.2.0
+#### libstdc++ from GCC-9.2.0
 
 ```bash
 cd /lfs/src/gcc-9.2.0
@@ -115,7 +117,9 @@ make install
 
 ## Pass 2
 
-### Binutils
+### Tools
+
+#### binutils
 
 ```bash
 cd /lfs/src/
@@ -131,7 +135,7 @@ make -C ld LIB_PATH=/usr/lib:/lib
 cp -v ld/ld-new /tools/bin
 ```
 
-### GCC
+#### GCC
 
 ```bash
 cd /lfs/src
@@ -180,7 +184,7 @@ readelf -l a.out | grep ': /tools'
 rm -v dummy.c a.out
 ```
 
-### Tcl
+#### tcl
 
 ```bash
 cd /lfs/src/
@@ -194,7 +198,7 @@ make install-private-headers
 ln -sv tclsh8.6 /tools/bin/tclsh
 ```
 
-### Expect
+#### expect
 
 ```bash
 cd /lfs/src/
@@ -207,7 +211,7 @@ make test
 make SCRIPTS="" install
 ```
 
-### dejagnu
+#### dejagnu
 
 ```bash
 cd /lfs/src/
@@ -217,7 +221,7 @@ make install
 make check
 ```
 
-### m4
+#### m4
 
 ```bash
 cd /lfs/src/
@@ -230,7 +234,7 @@ make check
 make install
 ```
 
-### ncurses
+#### ncurses
 
 ```bash
 cd /lfs/src/
@@ -243,7 +247,7 @@ ln -s libncursesw.so /tools/lib/libncurses.so
 ```
 
 
-### Bash
+#### bash
 
 ```bash
 cd /lfs/src/
@@ -254,7 +258,7 @@ make tests && make install
 ln -sv bash /tools/bin/sh
 ```
 
-### bison
+#### bison
 
 ```bash
 cd /lfs/src/
@@ -263,7 +267,7 @@ tar -xvf bison-3.4.1.tar.xz && cd bison-3.4.1
 make && make check && make install
 ```
 
-### bzip2
+#### bzip2
 
 ```bash
 cd /lfs/src/
@@ -272,7 +276,7 @@ make
 make PREFIX=/tools install
 ```
 
-### coreutils
+#### coreutils
 
 ```bash
 cd /lfs/src/
@@ -283,7 +287,7 @@ make RUN_EXPENSIVE_TESTS=yes check
 make install
 ```
 
-### diffutils
+#### diffutils
 
 ```bash
 cd /lfs/src/
@@ -292,7 +296,7 @@ tar -xvf diffutils-3.7.tar.xz && cd diffutils-3.7
 make && make check && make install
 ```
 
-### file
+#### file
 
 ```bash
 cd /lfs/src/
@@ -301,7 +305,7 @@ tar -xvf file-5.37.tar.gz && cd file-5.37
 make && make check && make install
 ```
 
-### findutils
+#### findutils
 
 ```bash
 cd /lfs/src/
@@ -312,7 +316,7 @@ echo "#define _IO_IN_BACKUP 0x100" >> gl/lib/stdio-impl.h
 ./configure --prefix=/tools && make && make check && make install
 ```
 
-### gawk
+#### gawk
 
 ```bash
 cd /lfs/src/
@@ -322,7 +326,7 @@ tar -xvf gawk-5.0.1.tar.xz && cd gawk-5.0.1
 make install
 ```
 
-### gettext
+#### gettext
 
 ```bash
 cd /lfs/src/
@@ -332,7 +336,7 @@ make && make check
 make install
 ```
 
-### grep 
+#### grep 
 
 ```bash
 cd /lfs/src/
@@ -340,7 +344,7 @@ tar -xvf grep-3.3.tar.xz && cd grep-3.3
 ./configure --prefix=/tools && make && make check && make install
 ``` 
  
-### gzip
+#### gzip
 
 ```bash
 cd /lfs/src/
@@ -348,7 +352,7 @@ tar -xvf gzip-1.10.tar.xz && cd gzip-1.10
 ./configure --prefix=/tools && make && make check && make install
 ```
 
-### make
+#### make
 
 ```bash
 cd /lfs/src/
@@ -358,7 +362,7 @@ sed -i '211,217 d; 219,229 d; 232 d' glob/glob.c
 make && make check && make install
 ```
 
-### patch
+#### patch
 
 ```bash
 cd /lfs/src/
@@ -366,7 +370,7 @@ tar -xvf patch-2.7.6.tar.xz && cd patch-2.7.6
 ./configure --prefix=/tools && make && make check && make install
 ```
 
-### perl
+#### perl
 
 ```bash
 cd /lfs/src/
@@ -378,7 +382,7 @@ mkdir -pv /tools/lib/perl5/5.30.0
 cp -Rv lib/* /tools/lib/perl5/5.30.0
 ```
 
-### python
+#### python
 
 ```bash
 cd /lfs/src/
@@ -389,7 +393,7 @@ make
 make install
 ```
 
-### sed
+#### sed
 
 ```bash
 cd /lfs/src/
@@ -398,7 +402,7 @@ tar -xvf sed-4.7.tar.xz && cd sed-4.7
 make install
 ```
 
-### tar
+#### tar
 
 ```bash
 cd /lfs/src/
@@ -406,7 +410,7 @@ tar -xvf tar-1.32.tar.xz && cd tar-1.32
 ./configure --prefix=/tools && make && make check && make install
 ```
 
-### texinfo
+#### texinfo
 
 ```bash
 cd /lfs/src/
@@ -414,7 +418,7 @@ tar -xvf texinfo-6.6.tar.xz && cd texinfo-6.6
 ./configure --prefix=/tools && make && make check && make install
 ```
 
-### xz
+#### xz
 
 ```bash
 cd /lfs/src/
